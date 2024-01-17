@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jjik'fire</title>
+    <style type="text/css">
+        body{
+            margin: 0;
+            overflow: hidden;
+            background-image: url('sky.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        .backimage{
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('background.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            z-index: -1;
+        }
+        .front{
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('front.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            z-index: 100;
+            pointer-events: none;
+        }
+        .effect {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 999; 
+            pointer-events: none;
+        }
+        .covereffect{
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('coveroverlay.gif');
+            background-size: cover;
+            background-repeat: no-repeat;
+            mix-blend-mode: overlay;
+            opacity: 1;
+            z-index: 5000;
+            pointer-events: none;
+        }
+        .fireeffect::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('fireeffect_big.gif');
+            background-size: cover;
+            background-repeat: no-repeat;
+            mix-blend-mode: overlay;
+            filter: blur(30px);
+            opacity: 0;
+            z-index: 1000;
+            pointer-events: none;
+        }
+        .fireeffect::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('fireeffect_small.gif');
+            background-size: cover;
+            background-repeat: no-repeat;
+            mix-blend-mode: add;
+            filter: blur(5px);
+            opacity: 0;
+            z-index: 1000;
+            pointer-events: none;
+        }
+        .vigne{
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('vignetting.gif');
+            background-size: cover;
+            background-repeat: no-repeat;
+            mix-blend-mode: multiply;
+            opacity: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+        .popup{
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        .popup-content{
+            background-image: url('popup.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            margin: 0;
+            padding: 70px;
+            width: 70%;
+            height: auto;
+            text-align: center;
+            transform: translate(-50%, -50%);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+        }
+        .fire{
+            position: relative;
+            display: flex;
+            width: 20%;
+            margin-left: auto;
+            margin-right: auto;
+            z-index: 2;
+        }
+        .fire img{
+            width: 100%;
+            height: auto;
+            position: absolute;
+            top: 55vh;
+        }
+        .sign{
+            position: relative;
+            display: flex;
+            width: 10%;
+            height: auto;
+            z-index: 10;
+        }
+        .sign img{
+            width: 100%;
+            height: auto;
+            position: relative;
+            top: 77vh;
+            left: 12vw;
+            cursor: pointer;
+        }
+        .cello{
+            position: relative;
+            display: flex;
+            width: 13%;
+            height: auto;
+        }
+        .cello img{
+            width: 100%;
+            height: auto;
+            position: relative;
+            top: 22vh;
+            left: calc(80vw - 6.5%);
+        }
+        .fl{
+            position: relative;
+            display: flex;
+            width: 11%;
+            height: auto;
+            z-index: 10;
+        }
+        .fl img{
+            width: 100%;
+            height: auto;
+            position: relative;
+            top: 26vh;
+            left: calc(57vw - 5.5%);
+        }
+        .uku{
+            position: relative;
+            display: flex;
+            width: 9%;
+            height: auto;
+            transform: scaleX(-1);
+            z-index: 4;
+        }
+        .uku img{
+            width: 100%;
+            height: auto;
+            position: relative;
+            top: -8vh;
+            right: calc(64vw - 4.5%);
+        }
+        .dr{
+            position: relative;
+            display: flex;
+            width: 17%;
+            height: auto;
+            z-index: 9;
+        }
+        .dr img{
+            width: 100%;
+            height: auto;
+            position: relative;
+            bottom: 46vh;
+            left: calc(74vw - 8.5%);
+        }
+        .vn{
+            position: relative;
+            display: flex;
+            width: 15%;
+            height: auto;
+            z-index: 2;
+        }
+        .vn img{
+            width: 100%;
+            height: auto;
+            position: relative;
+            bottom: 102vh;
+            left: calc(66vw - 7.5%);
+        }
+        .pf{
+            position: relative;
+            display: flex;
+            width: 15%;
+            height: auto;
+            z-index: 2;
+        }
+        .pf img{
+            width: 100%;
+            height: auto;
+            position: relative;
+            bottom: 178vh;
+            left: calc(53vw - 7.5%);
+        }
+        /* 여기까지 오른쪽 */
+        .trb{
+            position: relative;
+            display: flex;
+            width: 15%;
+            height: auto;
+            transform: scaleX(-1);
+            z-index: 3;
+        }
+        .trb img{
+            width: 100%;
+            height: auto;
+            position: relative;
+            bottom: 94vh;
+            right: calc(38vw - 7.5%);
+        }
+        .gtr{
+            position: relative;
+            display: flex;
+            width: 14%;
+            height: auto;
+            z-index: 6;
+        }
+        .gtr img{
+            width: 100%;
+            height: auto;
+            position: relative;
+            bottom: 113vh;
+            left: calc(25vw - 7%);
+        }
+        .djb{
+            position: relative;
+            display: flex;
+            width: 8%;
+            height: auto;
+            z-index: 4;
+            transform: scaleX(-1);
+        }
+        .djb img{
+            width: 100%;
+            height: auto;
+            position: relative;
+            bottom: 30vh;
+            right: calc(10vw - 4%);
+        }
+        .cb{
+            position: relative;
+            display: flex;
+            width: 16%;
+            height: auto;
+            z-index: 1;
+        }
+        .cb img{
+            width: 100%;
+            height: auto;
+            position: relative;
+            bottom: 219vh;
+            left: calc(34vw - 8%);
+        }
+        .trp{
+            position: relative;
+            display: flex;
+            width: 15%;
+            height: auto;
+            z-index: 5;
+            transform: scaleX(-1);
+        }
+        .trp img{
+            width: 100%;
+            height: auto;
+            position: relative;
+            bottom: 235vh;
+            right: calc(21vw - 7.5%);
+        }
+        .vo{
+            position: relative;
+            display: flex;
+            width: 36%;
+            height: auto;
+            z-index: 1;
+        }
+        .vostandby{
+            width: 100%;
+            height: auto;
+            position: relative;
+            bottom: 285vh;
+            left: calc(0vw - 68%);
+        }
+        .voplay1,
+        .voplay2{
+            width: 100%;
+            height: auto;
+            position: relative;
+            bottom: 285vh;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="backimage"></div>
+    <div class="front"></div>
+    <div class="effect">
+        <div class="covereffect"></div>
+        <div class="fireeffect"></div>
+        <div class="vigne"></div>
+    </div>
+    <div id="popup" class="popup" style="display: none;">
+        <div class="popup-content" style="display: none;">
+            <p>작은 동물들이 모여 캠프파이어를 하고 있습니다.<br>
+                각각의 동물을 클릭해 원하는 악기를 활성화해서<br>
+                당신만의 연주회를 꾸려보세요!<br><br><br><br><br>
+                <span class="tip">tip1 !</span><br><br>
+                원하는 동물이 클릭이 되지 않을 때는 동물의 다른 부위를 눌러보세요.<br><br><br>
+                <span class="tip">tip2 !</span><br><br>
+                숨어있는 동물을 찾아보세요.<br>
+                <br><br><br><br><br>
+                by. 신수빈  신풍경  안서연
+            </p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="fire">
+            <img id="fire" src="fire.gif">
+        </div>
+        <div class="sign">
+            <img id="sign" src="sign.png">
+        </div>
+        <div class="cello">
+            <img id="cellostandby" src="cellostandby.gif">
+            <img id="celloplay1" src="celloplay1.gif" style="display: none;">
+            <img id="celloplay2" src="celloplay2.gif" style="display: none;">
+        </div>
+        <div class="fl">
+            <img id="flstandby" src="flstandby.gif">
+            <img id="flplay1" src="flplay1.gif" style="display: none;">
+            <img id="flplay2" src="flplay2.gif" style="display: none;">
+        </div>
+        <div class="uku">
+            <img id="ukustandby" src="ukustandby.gif">
+            <img id="ukuplay1" src="ukuplay1.gif" style="display: none;">
+            <img id="ukuplay2" src="ukuplay2.gif" style="display: none;">
+        </div>
+        <div class="djb">
+            <img id="djbstandby" src="djbstandby.gif">
+            <img id="djbplay1" src="djbplay1.gif" style="display: none;">
+            <img id="djbplay2" src="djbplay2.gif" style="display: none;">
+        </div>
+        <div class="dr">
+            <img id="drstandby" src="drstandby.gif">
+            <img id="drplay1" src="drplay1.gif" style="display: none;">
+            <img id="drplay2" src="drplay2.gif" style="display: none;">
+        </div>
+        <div class="vn">
+            <img id="vnstandby" src="vnstandby.gif">
+            <img id="vnplay1" src="vnplay1.gif" style="display: none;">
+            <img id="vnplay2" src="vnplay2.gif" style="display: none;">
+        </div>
+        <!-- 여기까지 오른쪽 -->
+        <div class="trb">
+            <img id="trbstandby" src="trbstandby.gif">
+            <img id="trbplay1" src="trbplay1.gif" style="display: none;">
+            <img id="trbplay2" src="trbplay2.gif" style="display: none;">
+        </div>
+        <div class="gtr">
+            <img id="gtrstandby" src="gtrstandby.gif">
+            <img id="gtrplay1" src="gtrplay1.gif" style="display: none;">
+            <img id="gtrplay2" src="gtrplay2.gif" style="display: none;">
+        </div>
+        <div class="pf">
+            <img id="pfstandby" src="pfstandby.gif">
+            <img id="pfplay1" src="pfplay1.gif" style="display: none;">
+            <img id="pfplay2" src="pfplay2.gif" style="display: none;">
+        </div>
+        <div class="cb">
+            <img id="cbstandby" src="cbstandby.gif">
+            <img id="cbplay1" src="cbplay1.gif" style="display: none;">
+            <img id="cbplay2" src="cbplay2.gif" style="display: none;">
+        </div>
+        <div class="trp">
+            <img id="trpstandby" src="trpstandby.gif">
+            <img id="trpplay1" src="trpplay1.gif" style="display: none;">
+            <img id="trpplay2" src="trpplay2.gif" style="display: none;">
+        </div>
+        <div class="vo">
+            <img id="vostandby" class="vostandby" src="vostandby.gif">
+            <img id="voplay1" class="voplay1" src="voplay1.gif" style="display: none;">
+            <img id="voplay2" class="voplay2" src="voplay2.gif" style="display: none;">
+        </div>
+    </div>
+    <audio id="celloMusic" src="cello.mp3" autoplay muted></audio>
+    <audio id="flMusic" src="fl.mp3" autoplay muted></audio>
+    <audio id="ukuMusic" src="uku.mp3" autoplay muted></audio>
+    <audio id="djbMusic" src="djb.mp3"autoplay muted></audio>
+    <audio id="drMusic" src="dr.mp3" autoplay muted></audio>
+    <audio id="vnMusic" src="vn.mp3" autoplay muted></audio>
+    <audio id="trbMusic" src="trb.mp3" autoplay muted></audio>
+    <audio id="gtrMusic" src="gtr.mp3" autoplay muted></audio>
+    <audio id="pfMusic" src="pf.mp3" autoplay muted></audio>
+    <audio id="cbMusic" src="cb.mp3" autoplay muted></audio>
+    <audio id="trpMusic" src="trp.mp3" autoplay muted></audio>
+    <audio id="voMusic" src="cb.mp3"></audio>
+    <script src="script.js"></script>
+</body>
+</html>
